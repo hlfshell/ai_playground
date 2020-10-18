@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw
 
 class Grid():
 
-    def __init__(self, rows, cols, robot=[0, 0], goal=None, cell_size=25):
+    def __init__(self, rows, cols, robot=[0, 0], goal=None, cell_size=25, map_legend=None):
 
         self.robot = robot
         if goal is not None:
@@ -11,6 +11,15 @@ class Grid():
             self.goal = [rows - 1, cols - 1]
 
         self.cell_size = cell_size
+
+        self.map_legend = map_legend
+        if map_legend is None:
+            self.map_legend = {
+                'R': 'red',     # Robot
+                'G': 'green',   # Goal
+                'O' : 'white',  # Open
+                'X': 'black'    # Obstacle
+            }
 
         self.rows = rows
         self.cols = cols
@@ -48,19 +57,42 @@ class Grid():
         self.goals = [rows, cols]
         self.values[rows][cols] = 'G'
 
+    def get_value(self, row, col):
+        return self.values[row][col]
+
+    def get_children(self, row, col):
+        children = []
+        #rm, cm (row move, column move) - if you can, make the change in that direction
+        for rm in [-1, 1]:
+            rc = row + rm # row current
+            if rc < 0 or rc >= self.rows:
+                continue
+
+            child_value = self.values[rc][col]
+            if child_value == 'X':
+                continue
+                
+            children.append((rc, col))
+
+        for cm in [-1, 1]:
+            cc = col + cm # column current
+            if cc < 0 or cc >= self.cols:
+                continue
+
+            child_value = self.values[row][cc]
+            if child_value == 'X':
+                continue
+                
+            children.append((row, cc))
+                
+        return children
+
+    def add_color(self, value : str, color : str):
+        self.map_legend[value] = color
+
     def get_color(self, row, col):
         value = self.values[row][col]
-
-        if value == "O":
-            return 'white'
-        elif value == 'R':
-            return 'red'
-        elif value == 'G':
-            return 'green'
-        elif value == 'X':
-            return 'black'
-
-        return 'pink'
+        return self.map_legend[value]
 
     def draw(self):
         width = self.rows * self.cell_size
