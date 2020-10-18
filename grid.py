@@ -60,8 +60,8 @@ class Grid():
     def get_value(self, row, col):
         return self.values[row][col]
 
-    def get_children(self, row, col):
-        children = []
+    def get_neighbors(self, row, col):
+        neighbors = []
         #rm, cm (row move, column move) - if you can, make the change in that direction
         for rm in [-1, 1]:
             rc = row + rm # row current
@@ -72,7 +72,7 @@ class Grid():
             if child_value == 'X':
                 continue
                 
-            children.append((rc, col))
+            neighbors.append((rc, col))
 
         for cm in [-1, 1]:
             cc = col + cm # column current
@@ -83,9 +83,9 @@ class Grid():
             if child_value == 'X':
                 continue
                 
-            children.append((row, cc))
+            neighbors.append((row, cc))
                 
-        return children
+        return neighbors
 
     def add_color(self, value : str, color : str):
         self.map_legend[value] = color
