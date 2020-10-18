@@ -60,6 +60,9 @@ class Grid():
     def get_value(self, row, col):
         return self.values[row][col]
 
+    def set_value(self, row, col, value):
+        self.values[row][col] = value
+
     def get_neighbors(self, row, col):
         neighbors = []
         #rm, cm (row move, column move) - if you can, make the change in that direction
@@ -108,3 +111,7 @@ class Grid():
                 draw.rectangle([upper_left, bottom_right], fill = self.get_color(r, c))
 
         return im
+
+    def save_im(self, path : str):
+        im = self.draw()
+        im.save(path)
