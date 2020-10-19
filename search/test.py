@@ -1,4 +1,4 @@
-from grid import Grid
+from grid import Grid, open_grid
 from bfs_robot import BFS_Robot
 
 g = Grid(5, 5)
@@ -7,7 +7,14 @@ g.set_goal(0,0)
 g.mark_obstacles([ [1,1], [1,2], [1,3], [2,1], [3,1] ])
 g.print()
 
-bfs = BFS_Robot(g)
+g.write_grid("test.grid")
+
+print()
+
+g2 = open_grid("test.grid")
+g2.print()
+
+bfs = BFS_Robot(g2)
 path = None
 x = 0
 while path == None:

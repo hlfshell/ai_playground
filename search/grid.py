@@ -1,8 +1,13 @@
 from PIL import Image, ImageDraw
+import csv
 
 class Grid():
 
     def __init__(self, rows, cols, robot=[0, 0], goal=None, cell_size=25, map_legend=None):
+        if rows is None:
+            rows = 5
+        if cols is None:
+            cols = 5
 
         self.robot = robot
         if goal is not None:
@@ -35,9 +40,7 @@ class Grid():
     def print(self):
         for r in range(0, self.rows):
             for c in range(0, self.cols):
-                print(self.values[r][c], end='')
-                if c < len(self.values[r]) - 1:
-                    print(', ', end='')
+                print(self.values[r][c], end=' ')
             print()
 
     def set_robot(self, row, col):
@@ -115,3 +118,32 @@ class Grid():
     def save_im(self, path : str):
         im = self.draw()
         im.save(path)
+
+    def write_grid(self, path : str, delimiter : str = ' '):
+        with open(path, 'w', newline='') as gridfile:
+            gridwriter = csv.writer(gridfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
+            for row in self.values:
+                gridwriter.writerow(row)
+
+
+def open_grid(path: str, delimiter : str = ' '):
+    with open(path, newline='') as gridfile:
+        gridreader = csv.reader(gridfile, delimiter=delimiter, quoting=csv.QUOTE_NONE)
+        read = []
+        goal = (0, 0)
+        robot = (0, 0)
+        for r_index, row in enumerate(gridreader):
+            for c_index, cell in enumerate(row):
+                if cell == 'R':
+                    robot = (r_index, c_index)
+                elif cell == 'G':
+                    goal = (r_index, c_index)
+            read.append(row)
+
+
+        grid = Grid(len(read), len(read[0]))
+        grid.values = read
+        grid.robot = robot
+        grid.goal = goal
+
+        return grid
