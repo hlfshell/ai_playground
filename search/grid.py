@@ -125,6 +125,18 @@ class Grid():
             for row in self.values:
                 gridwriter.writerow(row)
 
+class GridGIFMaker():
+
+    def __init__(self, grid : Grid):
+        self.grid : Grid = grid
+        self.frames = []
+        self.add_frame()
+
+    def add_frame(self):
+        self.frames.append(self.grid.draw())
+
+    def write_gif(self, path : str, duration : int = 500, loop : int = 1):
+        self.frames[0].save(path, save_all=True, append_images=self.frames[1:], duration=duration, loop=loop)
 
 def open_grid(path: str, delimiter : str = ' '):
     with open(path, newline='') as gridfile:

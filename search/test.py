@@ -1,4 +1,4 @@
-from grid import Grid, open_grid
+from grid import Grid, open_grid, GridGIFMaker
 from bfs_robot import BFS_Robot
 from dfs_robot import DFS_Robot
 
@@ -16,27 +16,29 @@ g2 = open_grid("test.grid")
 g2.print()
 
 bfs = BFS_Robot(g)
+giffer = GridGIFMaker(g)
 path = None
 x = 0
 while path == None:
     print(f"Step {x}")
-    bfs.grid.save_im(f"out/bfs_{x}.jpg")
+    giffer.add_frame()
     x +=1
     path = bfs.step()
 
 print("Path found", path)
-
-bfs.grid.save_im(f"out/bfs_{x}.jpg")
+giffer.add_frame()
+giffer.write_gif("out/bfs.gif")
 
 dfs = DFS_Robot(g2)
+giffer = GridGIFMaker(g2)
 path = None
 x = 0
 while path == None:
     print(f"Step {x}")
-    dfs.grid.save_im(f"out/dfs_{x}.jpg")
+    giffer.add_frame()
     x +=1
     path = dfs.step()
 
 print("Path found", path)
-
-dfs.grid.save_im(f"out/dfs_{x}.jpg")
+giffer.add_frame()
+giffer.write_gif("out/dfs.gif")
