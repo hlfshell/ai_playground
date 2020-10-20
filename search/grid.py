@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw
 import csv
+from random import random, randint
 
 class Grid():
 
@@ -135,8 +136,28 @@ class GridGIFMaker():
     def add_frame(self):
         self.frames.append(self.grid.draw())
 
-    def write_gif(self, path : str, duration : int = 500, loop : int = 1):
+    def write_gif(self, path : str, duration : int = 100, loop : int = 1):
         self.frames[0].save(path, save_all=True, append_images=self.frames[1:], duration=duration, loop=loop)
+
+def generate_grid(rows : int = 10, cols : int = 10, obstacle_chance : float = 0.3):
+    grid = Grid(rows, cols)
+    robot = (randint(0, rows), randint(0, cols))
+    goal = robot
+    while goal == robot:
+        goal = (randint(0, rows), randint(0, cols))
+
+    grid.set_robot(robot[0], robot[1])
+    grid.set_goal(goal[0], goal[1])
+    
+    for r in range(0, rows):
+        for c in range(0, cols):
+            value = grid.get_value(r, c)
+            if value != 'C' and value != 'R':
+                # Check to see if we randomly generate an obstacle
+                if random() <= obstacle_chance:
+                    grid.set_value(r, c, 'X')
+
+    return grid
 
 def open_grid(path: str, delimiter : str = ' '):
     with open(path, newline='') as gridfile:
