@@ -1,19 +1,10 @@
-from grid import Grid
+from searcher import Searcher
 
-class BFS_Robot():
+class BFS(Searcher):
 
     def __init__(self, grid):
-        self.grid : Grid
-        self.grid = grid
-
-        # Add in the "current" and "past" children colors
-        self.grid.add_color('V', 'grey')   # Visited
-        self.grid.add_color('C', 'blue')   # Considering
-        self.grid.add_color('P', 'purple') # Path 
-
-        self.current_position = self.grid.robot
-        self.goal = self.grid.goal
-
+        super().__init__(grid)
+        
         # Set the root node as the first enqueued node
         self.fifo = []
         self.fifo.append(self.current_position)

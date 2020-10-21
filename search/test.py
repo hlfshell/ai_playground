@@ -1,6 +1,6 @@
 from grid import Grid, open_grid, GridGIFMaker, generate_grid
-from bfs_robot import BFS_Robot
-from dfs_robot import DFS_Robot
+from breadth_first_search import BFS
+from depth_first_search import DFS
 
 random_grid = generate_grid(25, 25)
 random_grid.print()
@@ -20,7 +20,7 @@ g2 = open_grid("test.grid")
 g2.print()
 
 
-bfs = BFS_Robot(g)
+bfs = BFS(g)
 giffer = GridGIFMaker(g)
 path = None
 x = 0
@@ -34,7 +34,7 @@ print("Path found", path)
 giffer.add_frame()
 giffer.write_gif("out/bfs.gif")
 
-dfs = DFS_Robot(g2)
+dfs = DFS(g2)
 giffer = GridGIFMaker(g2)
 path = None
 x = 0

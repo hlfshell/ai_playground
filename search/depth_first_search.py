@@ -1,17 +1,10 @@
 from grid import Grid
+from searcher import Searcher
 
-class DFS_Robot():
+class DFS(Searcher):
 
     def __init__(self, grid : Grid):
-        self.grid : Grid = grid
-
-        # Add in the "current" and "past" children colors
-        self.grid.add_color('V', 'grey')   # Visited
-        self.grid.add_color('C', 'blue')   # Considering
-        self.grid.add_color('P', 'purple') # Path 
-
-        self.current_position = self.grid.robot
-        self.goal = self.grid.goal
+        super().__init__(grid)
 
         # Set the root node as the first enqueued node
         self.lifo = []
