@@ -136,8 +136,12 @@ class GridGIFMaker():
     def add_frame(self):
         self.frames.append(self.grid.draw())
 
-    def write_gif(self, path : str, duration : int = 100, loop : int = 1):
-        self.frames[0].save(path, save_all=True, append_images=self.frames[1:], duration=duration, loop=loop)
+    def write_gif(self, path : str, duration : int = 100, loop : int = 1, path_frame_count = 5):
+        frames = self.frames[1:]
+        if path_frame_count > 1:
+            for i in range(1, path_frame_count):
+                frames.append(frames[-1])
+        self.frames[0].save(path, save_all=True, append_images=frames, duration=duration, loop=loop)
 
 def generate_grid(rows : int = 10, cols : int = 10, obstacle_chance : float = 0.3):
     grid = Grid(rows, cols)
