@@ -1,14 +1,20 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import csv
 from random import random, randint
+import colorsys
 
 class Grid():
 
-    def __init__(self, rows, cols, robot=[0, 0], goal=None, cell_size=25, map_legend=None):
+    def __init__(self, rows, cols, robot=[0, 0], goal=None, cell_size=25, map_legend=None, show_values=False, value_range=None):
         if rows is None:
             rows = 5
         if cols is None:
             cols = 5
+
+        if value_range is None:
+            self.value_range = (0, rows if rows > cols else cols)
+        else:
+            self.value_range = value_range
 
         self.robot = robot
         if goal is not None:
@@ -26,6 +32,8 @@ class Grid():
                 'O' : 'white',  # Open
                 'X': 'black'    # Obstacle
             }
+
+        self.show_values = show_values
 
         self.rows = rows
         self.cols = cols
@@ -99,7 +107,19 @@ class Grid():
 
     def get_color(self, row, col):
         value = self.values[row][col]
-        return self.map_legend[value]
+        if isinstance(value, int):
+            return self.value_to_color(value)
+        else:
+            return self.map_legend[value]
+
+    # value_to_color maps the high/low to green (close) and red(far)
+    # by utilizing HLS and then converts to RGB
+    def value_to_color(self, value : int):
+        # (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        mapped_value = (value - self.value_range[1]) * (120 - 0) / (self.value_range[0] - self.value_range[1]) + 0
+        conversion = colorsys.hls_to_rgb(mapped_value / 360, 0.5, 1.0)
+        return (int(conversion[0] * 255), int(conversion[1] * 255), int(conversion[2] * 255))
+
 
     def draw(self):
         width = self.rows * self.cell_size
@@ -113,6 +133,13 @@ class Grid():
                 upper_left = (r * self.cell_size, c * self.cell_size)
                 bottom_right = (upper_left[0] + self.cell_size, upper_left[1] + self.cell_size)
                 draw.rectangle([upper_left, bottom_right], fill = self.get_color(r, c))
+                if self.show_values:
+                    value = self.get_value(r, c)
+                    if value not in ['O', 'X']:
+                        font = ImageFont.load_default()
+                        x = int(upper_left[0] + (self.cell_size * .3))
+                        y = int(bottom_right[1] - (self.cell_size * .66))
+                        draw.text((x,y), str(value), font=font)
 
         return im
 
@@ -126,6 +153,7 @@ class Grid():
             for row in self.values:
                 gridwriter.writerow(row)
 
+    
 class GridGIFMaker():
 
     def __init__(self, grid : Grid):
@@ -136,7 +164,7 @@ class GridGIFMaker():
     def add_frame(self):
         self.frames.append(self.grid.draw())
 
-    def write_gif(self, path : str, duration : int = 100, loop : int = 1, path_frame_count = 5):
+    def write_gif(self, path : str, duration : int = 100, loop : int = 0, path_frame_count = 5):
         frames = self.frames[1:]
         if path_frame_count > 1:
             for i in range(1, path_frame_count):
