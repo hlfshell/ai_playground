@@ -16,3 +16,15 @@ Search algorithms can be found in the `search` folder. Within, you'll find these
     Within the `grid.py` file there is also a `GridGIFMaker` class which accepts a grid and can generate a gif of a given `Searcher` class. There is also a `grid_generator` that makes random `Grid` objects.
 - `breadth_first_search.py` - implements a `BFS` breadth first search `Searcher`
 - `depth_first_search.py` - implements a `DFS` depth first search `Searcher` 
+- `a_star.py` - this implements an A* searcher that uses simple euclidean distance for its cost function.
+
+### Search Examples
+
+#### Breadth First Search
+![Breadth First Search](search/example_gifs/bfs.gif)
+
+#### Depth First Search
+![Depth First Search](search/example_gifs/dfs.gif)
+
+#### A* Search
+![A* Search](search/example_gifs/astar.gif)
