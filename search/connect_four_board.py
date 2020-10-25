@@ -20,6 +20,8 @@ class Connect4Board():
         self.images = []
         self.cell_size = cell_size
 
+        self.store_im()
+
     def print(self):
         for r in range(0, self.rows):
             for c in range(0, self.cols):
@@ -137,7 +139,6 @@ class Connect4Board():
             for c in range(0, self.cols):
                 upper_left = (c * self.cell_size, r * self.cell_size)
                 bottom_right = (upper_left[0] + self.cell_size, upper_left[1] + self.cell_size)
-                print(r, c, upper_left, bottom_right)
                 draw.rectangle([upper_left, bottom_right], fill = self.color_legend[self.values[r][c]])
 
         return im
@@ -145,9 +146,9 @@ class Connect4Board():
     def store_im(self):
         self.images.append(self.draw())
 
-    def write_gif(self, path : str, duration : int = 100, loop : int = 0, end_frame_count = 5):
-        frames = self.frames[1:]
-        if path_frame_count > 1:
+    def write_gif(self, path : str, duration : int = 500, loop : int = 0, end_frame_count = 5):
+        frames = self.images[1:]
+        if end_frame_count > 1:
             for i in range(1, end_frame_count):
                 frames.append(frames[-1])
         self.images[0].save(path, save_all=True, append_images=frames, duration=duration, loop=loop)
