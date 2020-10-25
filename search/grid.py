@@ -12,7 +12,7 @@ class Grid():
             cols = 5
 
         if value_range is None:
-            self.value_range = (0, rows if rows > cols else cols)
+            self.value_range = (0, rows * 3 if rows > cols else cols * 3)
         else:
             self.value_range = value_range
 
@@ -66,7 +66,7 @@ class Grid():
 
     def set_goal(self, rows, cols):
         self.values[self.goal[0]][self.goal[1]] = 'O'
-        self.goals = [rows, cols]
+        self.goal = [rows, cols]
         self.values[rows][cols] = 'G'
 
     def get_value(self, row, col):
@@ -135,7 +135,7 @@ class Grid():
                 draw.rectangle([upper_left, bottom_right], fill = self.get_color(r, c))
                 if self.show_values:
                     value = self.get_value(r, c)
-                    if value not in ['O', 'X']:
+                    if value not in ['O', 'X', 'P']:
                         font = ImageFont.load_default()
                         x = int(upper_left[0] + (self.cell_size * .3))
                         y = int(bottom_right[1] - (self.cell_size * .66))
@@ -173,10 +173,10 @@ class GridGIFMaker():
 
 def generate_grid(rows : int = 10, cols : int = 10, obstacle_chance : float = 0.3):
     grid = Grid(rows, cols)
-    robot = (randint(0, rows), randint(0, cols))
+    robot = (randint(0, rows - 1), randint(0, cols - 1))
     goal = robot
     while goal == robot:
-        goal = (randint(0, rows), randint(0, cols))
+        goal = (randint(0, rows - 1), randint(0, cols - 1))
 
     grid.set_robot(robot[0], robot[1])
     grid.set_goal(goal[0], goal[1])
