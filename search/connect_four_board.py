@@ -51,7 +51,7 @@ class Connect4Board():
     def winner(self):
         # No moves, no winner?
         if len(self.possible_moves()) == 0:
-            return 'Draw'
+            return 'draw'
 
         # Horizontal Case
         # needs at least 4 cols to do
@@ -72,6 +72,7 @@ class Connect4Board():
         # needs at least 4 tall in rows to do
         if self.rows >= 4:
             for c in range(0, self.cols):
+                stack = []
                 for r in range(0, self.rows):
                     value = self.values[r][c]
                     if value == 'O':
@@ -106,6 +107,7 @@ class Connect4Board():
                         stack.append(value)
                     if len(stack) >= 4:
                         return value
+
         # Diagonal - checking from top right to bottom left
         for r in range(0, self.rows):
             for c in range(0, self.cols):
@@ -127,6 +129,13 @@ class Connect4Board():
                         return value
             
         return None
+
+    def clone(self):
+        clone = Connect4Board(self.rows, self.cols)
+        for r in range(0, self.rows):
+            for c in range(0, self.cols):
+                clone.values[r][c] = self.values[r][c]
+        return clone
 
     def draw(self):
         width = self.rows * self.cell_size
