@@ -42,5 +42,7 @@ To experiment with the `min max` algorithm I coded up a **Connect 4** game. The 
 ### Example GIFs
 
 #### Random (Red) vs Minmax (Blue) - 100 Games
+
 *minmax bot won 99 of 100 games against the random bot*
+
 ![random bot vs minmax bot](search/example_gifs/random_vs_minmax.gif)
