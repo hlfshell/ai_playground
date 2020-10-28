@@ -1,26 +1,29 @@
 from connect_four_board import Connect4Board
 from random_connect_four import RandomBot
+from min_max_connect_four import MinMaxBot
 
-game = Connect4Board(5,5)
+game = Connect4Board(6,7)
 
 player1 = True
-
-random_bot = RandomBot(game, '2')
+bot = MinMaxBot(game, '2')
+# bot = RandomBot(game, '2')
+turn = 1
 while game.winner() is None:
+    print(f"==== Turn {turn} ====")
+    game.print()
     if player1:
-        game.print()
         move = int(input("Move? "))
         game.move('1', move)
     else:
-        random_bot.move()
+        bot.move()
     player1 = False if player1 else True
     game.store_im()
-if not player1:
-    game.print()
+    turn += 1
+game.print()
 
-if game.winner() == 'Draw':
+if game.winner() == 'draw':
     print("Draw!")
 else:
     print(f"Player {game.winner()} is the winner!")
-
+    game.print()
 game.write_gif('out/random_bot.gif')

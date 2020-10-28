@@ -28,3 +28,19 @@ Search algorithms can be found in the `search` folder. Within, you'll find these
 
 #### A* Search
 ![A* Search](search/example_gifs/astar.gif)
+
+## Min Max
+
+To experiment with the `min max` algorithm I coded up a **Connect 4** game. The files of note here are:
+
+- `connect_four_board.py` - this is similar to `grid.py` before - it implements the connect four board of any given size, handles placing a piece (and having it "fall" to the correct place), has built in checks to determine a winner, and image drawing/gif writing capabilities.
+- `play_connect_four.py` - is a file that will have an in-terminal game of connect four against a bot as specified in the code.
+- `random_connect_four.py` - as a quick test and comparison bot, this bot literally just picks a random legal move each turn
+- `min_max_connect_four.py` - implements a minmax bot that plays connect four. It has a specifiable depth (defaults to 4) for how many turns ahead it must view.
+- `random_vs_minmax_connect_four.py` - pits the minmax bot against the random bot for 100 matches of Connect 4
+
+### Example GIFs
+
+#### Random (Red) vs Minmax (Blue) - 100 Games
+*minmax bot won 99 of 100 games against the random bot*
+![random bot vs minmax bot](search/example_gifs/random_vs_minmax.gif)

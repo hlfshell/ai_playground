@@ -4,7 +4,8 @@ from math import sqrt
 
 class OrderedQueue():
 
-    def __init__(self):
+    def __init__(self, reverse : bool = False):
+        self.reverse = reverse
         self._values = []
 
     def __len__(self):
@@ -16,13 +17,17 @@ class OrderedQueue():
         except:
             pass
         self._values.append((item, value))
-        self._values.sort(key=lambda x: x[1], reverse=False)
+        self._values.sort(key=lambda x: x[1], reverse=self.reverse)
 
     def pop(self):
         if len(self._values) == 0:
             return None
         value = self._values.pop(0)
         return value[0], value[1]
+
+    def print(self):
+        for index, value_score in enumerate(self._values):
+            print(f"{index} - {value_score[1]} - {value_score[0]}")
 
 class AStar(Searcher):
 
